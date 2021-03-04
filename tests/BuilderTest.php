@@ -19,6 +19,6 @@ class BuilderTest extends TestCase
         (new TestModelFactory)->count(11)->create();
         $paginator = TestModel::cursorPaginate(10, ['created_at' => 'desc', 'id' => 'desc']);
 
-        $this->assertEquals('http://localhost?cursor=WyIyMDIxLTAzLTAzVDAwOjAwOjAwLjAwMDAwMFoiLDJd', $paginator->nextCursorUrl());
+        $this->assertEquals('http://localhost?cursor=WyIyMDIxLTAzLTAzIDAwOjAwOjAwIiwyXQ%3D%3D', $paginator->nextCursorUrl());
     }
 }
