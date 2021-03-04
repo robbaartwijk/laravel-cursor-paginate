@@ -1,21 +1,21 @@
 {
-    "name": ":vendor_name/:package_name",
-    "description": ":package_description",
+    "name": "bitsnbolts/laravel-cursor-paginate",
+    "description": "Cursor based pagination for Laravel",
     "keywords": [
-        ":vendor_name",
-        ":package_name"
+        "bitsnbolts",
+        "laravel-cursor-paginate"
     ],
-    "homepage": "https://github.com/:vendor_name/:package_name",
+    "homepage": "https://github.com/bitsnbolts/laravel-cursor-paginate",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
+            "name": "Thijs van den Anker",
+            "email": "thijs@bitsnbolts.nl",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^7.4",
         "spatie/laravel-package-tools": "^1.1",
         "illuminate/contracts": "^8.0"
     },
@@ -27,13 +27,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src",
-            "Spatie\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Bitsnbolts\\CursorPaginate\\": "src",
+            "Bitsnbolts\\CursorPaginate\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\Skeleton\\Tests\\": "tests"
+            "Bitsnbolts\\CursorPaginate\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -47,10 +47,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\Skeleton\\SkeletonServiceProvider"
+                "Bitsnbolts\\CursorPaginate\\CursorPaginateServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "Spatie\\Skeleton\\SkeletonFacade"
+                "CursorPaginate": "Bitsnbolts\\CursorPaginate\\CursorPaginateFacade"
             }
         }
     },

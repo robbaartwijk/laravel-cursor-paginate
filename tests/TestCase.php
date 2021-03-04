@@ -1,10 +1,11 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace Bitsnbolts\CursorPaginate\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Bitsnbolts\CursorPaginate\CursorPaginateServiceProvider;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Spatie\Skeleton\SkeletonServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -12,15 +13,14 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Spatie\\Skeleton\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
+        $this->setUpDatabase();
+        $this->setUpRoutes();
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            SkeletonServiceProvider::class,
+            CursorPaginateServiceProvider::class,
         ];
     }
 
@@ -32,10 +32,21 @@ class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix' => '',
         ]);
+    }
 
-        /*
-        include_once __DIR__.'/../database/migrations/create_skeleton_table.php.stub';
-        (new \CreatePackageTable())->up();
-        */
+    protected function setUpDatabase()
+    {
+        $this->app->get('db')->connection()->getSchemaBuilder()->create('test_models', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+        });
+    }
+
+    protected function setUpRoutes()
+    {
+        Route::any('/', function () {
+            $result = TestModel::cursorPaginate(2, ['date_created' => 'desc', 'id' => 'desc']);
+            return $result;
+        });
     }
 }
