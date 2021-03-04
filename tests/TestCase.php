@@ -45,7 +45,7 @@ class TestCase extends Orchestra
     protected function setUpRoutes()
     {
         Route::any('/', function () {
-            $result = TestModel::cursorPaginate(2, ['date_created' => 'desc', 'id' => 'desc']);
+            $result = TestModel::cursorPaginate(2, ['created_at' => 'desc', 'id' => 'desc']);
             return $result;
         });
     }

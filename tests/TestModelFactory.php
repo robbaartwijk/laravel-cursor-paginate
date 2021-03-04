@@ -3,6 +3,7 @@
 namespace Bitsnbolts\CursorPaginate\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 class TestModelFactory extends Factory
 {
@@ -21,6 +22,7 @@ class TestModelFactory extends Factory
     public function definition()
     {
         return [
+            'created_at' => Carbon::create('2021-03-03'),
         ];
     }
 }
