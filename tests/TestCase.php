@@ -46,6 +46,7 @@ class TestCase extends Orchestra
     {
         Route::any('/', function () {
             $result = TestModel::cursorPaginate(2, ['created_at' => 'desc', 'id' => 'desc']);
+
             return $result;
         });
     }
