@@ -34,10 +34,27 @@ class RequestTest extends TestCase
     }
 
     /** @test */
-    public function the_total_will_be_the_total_number_of_items()
+    public function the_total_is_the_total_number_of_items()
     {
         (new TestModelFactory)->count(23)->create();
         $response = $this->get('/');
+        $total = json_decode($response->getContent())->total;
+        $this->assertEquals(23, $total);
+    }
+
+    /** @test */
+    public function the_total_is_calculated_correctly_when_using_the_cursor()
+    {
+        // It works for the base request
+        (new TestModelFactory)->count(23)->create();
+        $response = $this->get('/');
+        $total = json_decode($response->getContent())->total;
+        $this->assertEquals(23, $total);
+
+        // And when using the cursor
+        $next = json_decode($response->getContent())->next;
+
+        $response = $this->get($next);
         $total = json_decode($response->getContent())->total;
         $this->assertEquals(23, $total);
     }

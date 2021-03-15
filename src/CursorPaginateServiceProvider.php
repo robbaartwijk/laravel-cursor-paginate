@@ -30,6 +30,9 @@ class CursorPaginateServiceProvider extends PackageServiceProvider
         Builder::macro('cursorPaginate', function ($limit, $columns) {
             $cursor = CursorPaginator::currentCursor();
 
+            // Get the total before applying the cursor
+            $total = $this->count();
+
             if ($cursor) {
                 $apply = function ($query, $columns, $cursor) use (&$apply) {
                     $query->where(function ($query) use ($columns, $cursor, $apply) {
@@ -54,8 +57,6 @@ class CursorPaginateServiceProvider extends PackageServiceProvider
             }
 
             $items = $this->limit($limit + 1)->get();
-
-            $total = $this->count();
 
             if ($items->count() <= $limit) {
                 return new CursorPaginator($items, $total);
