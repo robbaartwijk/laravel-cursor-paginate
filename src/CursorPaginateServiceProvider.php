@@ -67,7 +67,7 @@ class CursorPaginateServiceProvider extends PackageServiceProvider
             return new CursorPaginator($items, $total, array_map(function ($column) use ($items) {
                 $value = $items->last()->{$column};
                 if ($value instanceof \DateTimeInterface) {
-                    $value = $value->format('Y-m-d H:i:s');
+                    $value = $value->format('Y-m-d H:i:s.v');
                 }
 
                 return $value;
