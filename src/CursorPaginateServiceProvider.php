@@ -55,17 +55,20 @@ class CursorPaginateServiceProvider extends PackageServiceProvider
 
             $items = $this->limit($limit + 1)->get();
 
+            $total = $this->count();
+
             if ($items->count() <= $limit) {
-                return new CursorPaginator($items);
+                return new CursorPaginator($items, $total);
             }
 
             $items->pop();
 
-            return new CursorPaginator($items, array_map(function ($column) use ($items) {
+            return new CursorPaginator($items, $total, array_map(function ($column) use ($items) {
                 $value = $items->last()->{$column};
                 if ($value instanceof \DateTimeInterface) {
-                  $value = $value->format('Y-m-d H:i:s');
+                    $value = $value->format('Y-m-d H:i:s');
                 }
+
                 return $value;
             }, array_keys($columns)));
         });

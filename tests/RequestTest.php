@@ -32,4 +32,13 @@ class RequestTest extends TestCase
         $response = $this->get($next);
         $response->assertJsonFragment(['id' => 9]);
     }
+
+    /** @test */
+    public function the_total_will_be_the_total_number_of_items()
+    {
+        (new TestModelFactory)->count(23)->create();
+        $response = $this->get('/');
+        $total = json_decode($response->getContent())->total;
+        $this->assertEquals(23, $total);
+    }
 }

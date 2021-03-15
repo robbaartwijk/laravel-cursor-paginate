@@ -8,13 +8,15 @@ use Illuminate\Contracts\Support\Jsonable;
 class CursorPaginator implements Arrayable, Jsonable
 {
     protected $items;
+    protected $total;
     protected $nextCursor;
     protected $currentCursor;
     protected $params = [];
 
-    public function __construct($items, $nextCursor = null)
+    public function __construct($items, $total, $nextCursor = null)
     {
         $this->items = $items;
+        $this->total = $total;
         $this->nextCursor = $nextCursor;
         $this->currentCursor = self::currentCursor();
     }
@@ -43,8 +45,7 @@ class CursorPaginator implements Arrayable, Jsonable
 
     public function total()
     {
-        // @todo
-        return 'todo';
+        return $this->total;
     }
 
     public function currentCursorUrl()
