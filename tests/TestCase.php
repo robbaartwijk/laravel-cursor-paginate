@@ -21,6 +21,7 @@ class TestCase extends Orchestra
     {
         return [
             CursorPaginateServiceProvider::class,
+            \Spatie\LaravelRay\RayServiceProvider::class,
         ];
     }
 
