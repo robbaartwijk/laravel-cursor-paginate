@@ -7,9 +7,8 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 /**
- * @method count()
- * @method orderBy(int|string $column, mixed $direction)
- * @method limit(int $param)
+ * @mixin \Illuminate\Database\Eloquent\Builder
+
  */
 class CursorPaginateServiceProvider extends PackageServiceProvider
 {
@@ -25,12 +24,18 @@ class CursorPaginateServiceProvider extends PackageServiceProvider
             ->hasConfigFile();
     }
 
+    /**
+     * @return void
+     */
     public function boot()
     {
         $this->registerMacro();
     }
 
-    protected function registerMacro()
+    /**
+     * @psalm-suppress UndefinedMethod
+     */
+    protected function registerMacro(): void
     {
         Builder::macro('cursorPaginate', function ($limit, $columns) {
             $cursor = CursorPaginator::currentCursor();
@@ -39,7 +44,9 @@ class CursorPaginateServiceProvider extends PackageServiceProvider
             $total = $this->count();
 
             if ($cursor) {
-                $apply = function ($query, $columns, $cursor) use (&$apply) {
+                $apply = function ($query, $columns, $cursor) use (&$apply): void {
+
+                    /** @var \Illuminate\Database\Eloquent\Builder $this */
                     $query->where(function ($query) use ($columns, $cursor, $apply) {
                         $column = key($columns);
                         $direction = array_shift($columns);
@@ -72,7 +79,7 @@ class CursorPaginateServiceProvider extends PackageServiceProvider
             return new CursorPaginator($items, $total, array_map(function ($column) use ($items) {
                 $value = $items->last()->{$column};
                 if ($value instanceof \DateTimeInterface) {
-                    $format = $value->milliseconds ? 'Y-m-d H:i:s.u' : 'Y-m-d H:i:s';
+                    $format = $value->format('u') > 0 ? 'Y-m-d H:i:s.u' : 'Y-m-d H:i:s';
                     $value = $value->format($format);
                 }
 

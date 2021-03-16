@@ -4,14 +4,15 @@ namespace Bitsnbolts\CursorPaginate;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Database\Eloquent\Collection;
 
 class CursorPaginator implements Arrayable, Jsonable
 {
-    protected $items;
-    protected $total;
+    protected Collection $items;
+    protected int $total;
     protected $nextCursor;
     protected $currentCursor;
-    protected $params = [];
+    protected array $params = [];
 
     public function __construct($items, $total, $nextCursor = null)
     {
@@ -26,36 +27,39 @@ class CursorPaginator implements Arrayable, Jsonable
         return json_decode(base64_decode(request('cursor')));
     }
 
-    public function appends($params)
+    /**
+     * @return static
+     */
+    public function appends($params): self
     {
         $this->params = $params;
 
         return $this;
     }
 
-    public function items()
+    public function items(): Collection
     {
         return $this->items;
     }
 
-    public function count()
+    public function count(): int
     {
         return $this->items->count();
     }
 
-    public function total()
+    public function total(): int
     {
         return $this->total;
     }
 
-    public function currentCursorUrl()
+    public function currentCursorUrl(): string
     {
         return $this->currentCursor ? url()->current().'?'.http_build_query(array_merge([
                 'cursor' => base64_encode(json_encode($this->currentCursor)),
             ], $this->params)) : url()->current();
     }
 
-    public function nextCursorUrl()
+    public function nextCursorUrl(): ?string
     {
         return $this->nextCursor ? url()->current().'?'.http_build_query(array_merge([
             'cursor' => base64_encode(json_encode($this->nextCursor)),
