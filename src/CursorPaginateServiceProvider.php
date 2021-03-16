@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
+/**
+ * @method count()
+ * @method orderBy(int|string $column, mixed $direction)
+ * @method limit(int $param)
+ */
 class CursorPaginateServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
