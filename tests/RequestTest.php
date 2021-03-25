@@ -41,7 +41,7 @@ class RequestTest extends TestCase
     {
         (new TestModelFactory)->count(11)->create();
         $self = json_decode($this->get('/?foo=bar&baz=9')->getContent())->self;
-        $this->assertStringContainsString('foo=bar&baz=9', $self);
+        $this->assertStringContainsString('?foo=bar&baz=9', $self);
     }
 
     /** @test */
