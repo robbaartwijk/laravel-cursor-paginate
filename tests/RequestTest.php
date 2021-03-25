@@ -37,6 +37,14 @@ class RequestTest extends TestCase
     }
 
     /** @test */
+    public function the_next_url_contains_the_original_query_parameters()
+    {
+        (new TestModelFactory)->count(11)->create();
+        $next = json_decode($this->get('/?foo=bar&baz=9')->getContent())->next;
+        $this->assertStringContainsString('foo=bar&baz=9', $next);
+    }
+
+    /** @test */
     public function the_total_is_the_total_number_of_items()
     {
         (new TestModelFactory)->count(23)->create();

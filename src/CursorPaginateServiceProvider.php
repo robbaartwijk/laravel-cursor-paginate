@@ -3,6 +3,7 @@
 namespace Bitsnbolts\CursorPaginate;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -76,7 +77,7 @@ class CursorPaginateServiceProvider extends PackageServiceProvider
 
             $items->pop();
 
-            return new CursorPaginator($items, $total, array_map(function ($column) use ($items) {
+            return (new CursorPaginator($items, $total, array_map(function ($column) use ($items) {
                 $value = $items->last()->{$column};
                 if ($value instanceof \DateTimeInterface) {
                     $format = $value->format('v') > 0 ? 'Y-m-d H:i:s.v' : 'Y-m-d H:i:s';
@@ -84,7 +85,8 @@ class CursorPaginateServiceProvider extends PackageServiceProvider
                 }
 
                 return $value;
-            }, array_keys($columns)));
+            }, array_keys($columns))))
+                ->appends(Arr::except(request()->input(), 'cursor'));
         });
     }
 }
