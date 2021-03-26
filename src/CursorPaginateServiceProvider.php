@@ -72,7 +72,8 @@ class CursorPaginateServiceProvider extends PackageServiceProvider
             $items = $this->limit($limit + 1)->get();
 
             if ($items->count() <= $limit) {
-                return new CursorPaginator($items, $total);
+                return (new CursorPaginator($items, $total))
+                    ->appends(Arr::except(request()->input(), 'cursor'));
             }
 
             $items->pop();

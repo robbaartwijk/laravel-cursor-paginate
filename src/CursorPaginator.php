@@ -54,9 +54,18 @@ class CursorPaginator implements Arrayable, Jsonable
 
     public function currentCursorUrl(): string
     {
-        return $this->currentCursor ? url()->current().'?'.http_build_query(array_merge([
+        if ($this->currentCursor) {
+            return url()->current().'?'.http_build_query(array_merge([
                 'cursor' => base64_encode(json_encode($this->currentCursor)),
-            ], $this->params)) : url()->current().'?'.http_build_query($this->params);
+            ], $this->params));
+        }
+
+        $result = url()->current();
+        if (count($this->params) > 0) {
+            $result .= '?'.http_build_query($this->params);
+        }
+
+        return $result;
     }
 
     public function nextCursorUrl(): ?string
