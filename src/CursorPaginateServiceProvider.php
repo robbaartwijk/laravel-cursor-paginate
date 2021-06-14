@@ -38,7 +38,7 @@ class CursorPaginateServiceProvider extends PackageServiceProvider
      */
     protected function registerMacro(): void
     {
-        Builder::macro('cursorPaginate', function ($limit, $columns) {
+        Builder::macro('cursorPaginateWithTotal', function ($limit, $columns) {
             $cursor = CursorPaginator::currentCursor();
 
             // Get the total before applying the cursor
