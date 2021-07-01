@@ -32,7 +32,7 @@ return [
 ## Usage
 
 ```php
-$paginator = App\Models\ExampleModel::cursorPaginate(10, ['created_at' => 'desc', 'id' => 'desc']);
+$paginator = App\Models\ExampleModel::cursorPaginateWithTotal(10, ['created_at' => 'desc', 'id' => 'desc']);
 $items = $paginator->items();
 $nextUrl = $paginator->nextCursorUrl();
 ```
